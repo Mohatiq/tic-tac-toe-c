@@ -4,8 +4,8 @@
 struct player
 {
     char *name;
-    char item;
     int score;
+    char item;
 };
 void win(char item, int line, int column, char table[3][3])
 {
@@ -55,11 +55,19 @@ void PlayerChoice(char item, char tab[3][3])
         }
     }
 }
-void ComputerChoice(int line, int column, char item, char tab[3][3])
+void ComputerChoice(char item, char tab[3][3])
 {
-
-    tab[line][column] = 'O';
+    int AI_line, AI_column;
+    int valid_move=0;
     printf("Now it is the computer's turn!!\n");
+    while(valid_move==0){
+        AI_line=rand()%3;
+        AI_column=rand()%3;
+        if(table[AI_line][AI_column]=='.'){
+            table[AI_line][AI_column]==item;
+            valid_move==1;//breaking the while loop because a valid move was made
+        }
+    }
 }
 void fill_table(char tab[3][3])
 {
