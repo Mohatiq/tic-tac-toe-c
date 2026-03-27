@@ -1,31 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include<stdbool.h>
 struct player
 {
     char *name;
     int score;
     char item;
 };
-void win(char item, int line, int column, char table[3][3])
-{
-    for (int i = 0; i < 3; i++)
-    {
-        if (table[line][i] == item)
-        {
-            printf("we have a winner here!!!");
+
+void win(char item,char table[3][3]){
+    int wintab[3]={false,false,false};
+    int i=0;
+    int line=0;
+    int column=0;
+    while(i<3){
+        if (table[line][i]==item){
+            wintab[i]=true;
+            line++;
+        }else if(table[i][column]==item){
+            wintab[i]==true;
+            column++;
+        }else if (table[i][i]==item){
+            wintab[i]==true;
         }
-        else if (table[i][column] == item)
-        {
-            printf("we have a winner here!!!");
-        }
-        else if (table[i][i] == item)
-        {
-            printf("we have a winner here!!!");
+        i++;
+    }
+    for(int j=0;j<3;j++){
+        if (wintab[i]==true){
+            printf("we have a winner here!!");
         }
     }
-}
 
+}
 void PlayerChoice(char item, char tab[3][3])
 {
     int line, column;
@@ -55,7 +62,7 @@ void PlayerChoice(char item, char tab[3][3])
         }
     }
 }
-void ComputerChoice(char item, char tab[3][3])
+void ComputerChoice(char item, char table[3][3])
 {
     int AI_line, AI_column;
     int valid_move=0;
@@ -64,8 +71,8 @@ void ComputerChoice(char item, char tab[3][3])
         AI_line=rand()%3;
         AI_column=rand()%3;
         if(table[AI_line][AI_column]=='.'){
-            table[AI_line][AI_column]==item;
-            valid_move==1;//breaking the while loop because a valid move was made
+            table[AI_line][AI_column]=item;
+            valid_move=1;//breaking the while loop because a valid move was made
         }
     }
 }
@@ -82,7 +89,7 @@ void fill_table(char tab[3][3])
         printf("\n");
     }
 }
-void game(int round, int line, int column, char item, char table[3][3])
+void game(int round,  char item, char table[3][3])
 {
     if (round == 9)
     {
@@ -96,11 +103,11 @@ void game(int round, int line, int column, char item, char table[3][3])
             {
                 PlayerChoice(item, table);
                 fill_table(table);
-                ComputerChoice(line, column, 'O', table);
+                ComputerChoice( 'O', table);
                 fill_table(table);
             }
             round++;
-            win(item, line, column, table);
+            win(item, table);
         }
     }
 }
@@ -130,5 +137,5 @@ int main(void)
     struct player User = {.name = "Player", .score = 0, .item = userItem};
     struct player Computer = {.name = "Robot", .score = 0, .item = userItem == 'X' ? 'O' : 'X'};
     printf("You are '%c', the computer is '%c'.\nLet's start the game!!\nNotice: the position of your item should be enterd in the following order:\n1.Line.\n2.column.\n", User.item, Computer.item);
-    game(round,line,column,userItem,table);
+    game(round,userItem,table);
 }
