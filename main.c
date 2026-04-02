@@ -9,27 +9,31 @@ struct player
     char item;
 };
 
-void win(char item,char table[3][3]){
-    int wintab[3]={false,false,false};
+void win(char item,char table[3][3],char userItem){
     int i=0;
-    int line=0;
-    int column=0;
-    while(i<3){
-        if (table[line][i]==item){
-            wintab[i]=true;
-            line++;
-        }else if(table[i][column]==item){
-            wintab[i]==true;
-            column++;
-        }else if (table[i][i]==item){
-            wintab[i]==true;
-        }
-        i++;
+    bool win=false;
+    for(i=0;i<3;i++){
+        if (table[0][i]==item && table[1][i]==item && table[2][i]==item){
+            win=true;
+        }else if(table[i][0]==item && table[i][1]==item && table[i][2]==item){
+            win=true;
+        } 
     }
-    for(int j=0;j<3;j++){
-        if (wintab[i]==true){
-            printf("we have a winner here!!");
+    if (table[0][0]==item && table[1][1]==item && table[2][2]==item){
+        win=true;
+    }
+    if (table[0][2]==item && table[1][1]==item && table[2][0]==item){
+        win=true;
+    }
+        
+    
+    if(win){
+        if(item==userItem){
+            printf("Congrats!!! You are the winner ;)\n");
+        }else{
+            printf("Ohhh!! The computer won :(\n");
         }
+        exit(0);
     }
 
 }
@@ -89,28 +93,40 @@ void fill_table(char tab[3][3])
         printf("\n");
     }
 }
-void game(int round,  char item, char table[3][3])
-{
-    if (round == 9)
-    {
-        printf("It's a draw!!!!");
-    }
-    else
-    {
-        while (round < 9)
-        {
-            if (item == 'X')
-            {
-                PlayerChoice(item, table);
-                fill_table(table);
-                ComputerChoice( 'O', table);
-                fill_table(table);
-            }
-            round++;
-            win(item, table);
+
+void game(char userItem, char table[3][3]) {
+    char computerItem = (userItem == 'X') ? 'O' : 'X';
+    int moves = 0;
+
+    while (moves < 9) {
+        // Player's Turn 
+        if (userItem == 'X') {
+            PlayerChoice(userItem, table);
+        } else {
+            ComputerChoice(computerItem, table);
         }
+        fill_table(table);
+        win('X', table,userItem); // Always check if X won
+        win('O', table,userItem); // Always check if O won
+        moves++;
+        if (moves == 9) break;
+
+        //Computer's Turn
+        if (userItem == 'X') {
+            ComputerChoice(computerItem, table);
+        } else {
+            PlayerChoice(userItem, table);
+        }
+        fill_table(table);
+        win('X', table,userItem);
+        win('O', table,userItem);
+        moves++;
     }
+
+    printf("It's a tie!!\n");
+    exit(0);
 }
+
 int main(void)
 {
     char table[3][3] = {
@@ -121,8 +137,7 @@ int main(void)
     int line, column;
     int round=1;
     srand(time(NULL)); // seeding the generator using the current time system which changes every second
-    int AI_line = rand() % 3;
-    int AI_column = rand() % 3;
+   
     printf("the game table:\n");
     printf("Please choose your character 'X' or 'O' :\n");
     scanf("%c", &userItem);
@@ -137,5 +152,5 @@ int main(void)
     struct player User = {.name = "Player", .score = 0, .item = userItem};
     struct player Computer = {.name = "Robot", .score = 0, .item = userItem == 'X' ? 'O' : 'X'};
     printf("You are '%c', the computer is '%c'.\nLet's start the game!!\nNotice: the position of your item should be enterd in the following order:\n1.Line.\n2.column.\n", User.item, Computer.item);
-    game(round,userItem,table);
+    game(userItem,table);
 }
