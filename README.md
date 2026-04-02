@@ -12,9 +12,9 @@ Requirements:
 -git.
 
 Downloading the game:
-    To download the game you can clone the repository to your computer using the command bellow:
+To download the game you can clone the repository to your computer using the command bellow:
     """git clone https://github.com/Mohatiq/tic-tac-toe-c.git"""
 Compilation:
-    To compile the game you can type the command bellow in your terminal inside the directory  where you cloned the main.c code :
+To compile the game you can type the command bellow in your terminal inside the directory  where you cloned the main.c code :
     """gcc main.c -o tic-tac-toe"""
-    and then you can run it using """./tic-tac-toe"""
+and then you can run it using """./tic-tac-toe"""
